@@ -5,6 +5,11 @@ int** Compare::obs_map;
 float** Compare::shortest_2d;
 int** Compare::grid_obs_map;
 
+
+// 比较两个状态的通行代价
+// 通行代价是由所处栅格的cost3d和shortest_2d相加决定的
+// shortest_2d 是dijkstra算法计算的离起始点的代价
+// cost3d是考虑了车辆运动学之后的代价
 bool Compare::operator() (const State s1, const State s2){
 	//to do: replace by heuristic+cost comparison
 	return s1.cost3d+holonomic_with_obs(s1)+0*non_holonomic_without_obs(s1)>s2.cost3d+holonomic_with_obs(s2)+0*non_holonomic_without_obs(s2);
@@ -88,8 +93,8 @@ void Compare::runDijkstra(){
 		}
 	resize(dist, dist, Size(400, 400));
 	//uncomment to check if dijkstra ran properly
-	//imshow("dist", dist);
-	//waitKey(0);
+	imshow("dist", dist);
+	waitKey(0);
 }
 
 struct pt{

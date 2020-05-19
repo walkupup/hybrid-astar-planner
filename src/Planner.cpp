@@ -22,13 +22,18 @@ void Planner::plan(State &start, State &target, Map &map){
 			if(Compare::obs_map[i][j])
 				Compare::grid_obs_map[i*DX/MAPX][j*DY/MAPY]=1;
 		}
+
+	// 运行dijkstra算法，目的是得到shortest_2d，即每个点到起始点的代价，后续要用到
 	Compare cmp;
 	cmp.runDijkstra();
 
 
 	map.initCollisionChecker();
+
+	// 为每个栅格找到距离最近的障碍物的距离，输出为 nearest_obstacle
 	map.find_near_obs();
 
+	// 此处定义优先级队列，元素大小比较是由 Compare::operator()定义的
 	priority_queue<State, vector<State>, Compare> pq;
 	start.cost3d=0;
 	pq.push(start);
@@ -46,7 +51,9 @@ void Planner::plan(State &start, State &target, Map &map){
 		State current=pq.top();
 		pq.pop();
 
-		if(abs(current.gx-target.gx)<=1 && abs(current.gy-target.gy)<=1 && abs(current.gtheta-target.gtheta)<=5){
+		// 如果到达目的地，则把全部车轨迹画出来，结束路径规划
+		if(abs(current.gx-target.gx)<=1 && abs(current.gy-target.gy)<=1 && abs(current.gtheta-target.gtheta)<=5)
+		{
 			cout<<"Reached target."<<endl;
 
 			State Dummy;
@@ -73,17 +80,20 @@ void Planner::plan(State &start, State &target, Map &map){
 
 		vis[current.gx][current.gy][current.gtheta]=1;
 
+		// 为当前状态扩展出若干个（3个）后续状态：左转30度，右转30度，直行。行进长度为40.
 		vector<State> next=current.getNextStates();
 
 		for(int i=0;i<next.size();i++){
 			//display.drawCar(next[i]);
+			// 检查在当前位置是否发生碰撞，考虑了质点加上车轮廓之后的碰撞情况
 			if(!map.checkCollision(next[i])){
-
 
 				if(!vis[next[i].gx][next[i].gy][next[i].gtheta]){
 					//display.drawCar(next[i]);
 					current.next=&(next[i]);
 					next[i].previous=&(current);
+					
+					// 如果直行，cost加5，否则加7
 					if(i==1)
 						next[i].cost3d=current.cost3d+5;
 					else

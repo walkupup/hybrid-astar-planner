@@ -43,6 +43,7 @@ void Map::initCollisionChecker(){
 	return;
 }
 
+// 检查在当前位置是否发生碰撞，考虑了质点加上车轮廓之后的碰撞情况
 bool Map::checkCollision(State pos){
 
 	// cout<<"Collision checking: "<<endl;
@@ -105,6 +106,9 @@ bool Map::is_boundary_obstacle(int i, int j)
         return false;
 }
 
+
+// 为每个栅格找到距离最近的障碍物的距离，
+// 输出为 nearest_obstacle
 void Map::find_near_obs()
 {
         node node_p,node_c;

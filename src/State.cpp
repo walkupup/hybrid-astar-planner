@@ -22,6 +22,7 @@ vector<State> State::getNextStates(){
 	State n;
 	float alpha,beta, r, d=40;
 
+	// 这个循环执行3次，即扩展3个状态：左转30度，右转30度，直行
 	for(alpha=-BOT_M_ALPHA; alpha<=BOT_M_ALPHA+0.001; alpha+=BOT_M_ALPHA){
 		beta=d*tan(alpha*PI/180)/BOT_L;
 

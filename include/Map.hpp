@@ -6,9 +6,9 @@
 
 class Map{
 public:
-    int** obs_map;
-    int** acc_obs_map;
-    int** nearest_obstacle;
+    int** obs_map;			// 800x800的障碍物地图
+    int** acc_obs_map;		// 800x800的累积地图，从原点到当前位置的矩形区域内obs_map值的和
+    int** nearest_obstacle; // 800x800的最近障碍物地图，即每个点距离最近的障碍物的距离
     int obs_dist_max;
 
     Map();
