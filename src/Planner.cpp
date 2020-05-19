@@ -2,8 +2,9 @@
 
 
 State previous[GX][GY][Theta];
+int vis[GX][GY][Theta];
 
-void Planner::plan(State start, State target, Map map){
+void Planner::plan(State &start, State &target, Map &map){
 
 	//initialize variables for the Compare class
 	Compare::target=target;
@@ -37,9 +38,8 @@ void Planner::plan(State start, State target, Map map){
 	display.drawCar(start);
 	display.drawCar(target);
 
-	int vis[GX][GY][Theta];
 	memset(vis, 0, sizeof(int)*GX*GY*Theta);
-
+	
 	int iter=0;
 	while(pq.size()>0)
 	{
@@ -56,7 +56,8 @@ void Planner::plan(State start, State target, Map map){
 			while(current.x!=start.x || current.y!=start.y || current.theta!=start.theta){
 				current.velocity=VELOCITY_MAX/current.change;
 				display.drawCar(current);
-			        display.show(2000/current.velocity);//This can be removed while executing the algo
+			    display.show(2000/current.velocity);//This can be removed while executing the algo
+				//display.show(0);
 				Dummy=previous[current.gx][current.gy][current.gtheta];
 				Dummy.change=PRIORITY_MOVEMENT*fabs(Dummy.theta-current.theta)/(2.0*BOT_M_ALPHA)+
 					     PRIORITY_OBSTACLE_NEAR*(map.obs_dist_max-map.nearest_obstacle_distance(Dummy))/(float)(map.obs_dist_max-1)+
@@ -97,6 +98,6 @@ void Planner::plan(State start, State target, Map map){
 	}
 	cout<<"Done."<<endl;
 	display.show(0);
-
+	
 	return;
 }

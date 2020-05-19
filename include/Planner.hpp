@@ -9,7 +9,7 @@
 
 class Planner{
 public:
-	void plan(State start, State target, Map map);
+	void plan(State &start, State &target, Map &map);
 };
 
 #endif
