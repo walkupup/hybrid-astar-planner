@@ -36,10 +36,11 @@ void Compare::runDijkstra(){
 	priority_queue<State, vector<State>, compare2dSignature> frontier(&compare2d);
 	int vis[DX][DY];
 
+	float *cost1 = new float[DX * DY];
 	float** cost=new float*[DX];
 	for(int i=0;i<DX;i++)
 	{
-		cost[i]=new float[DY];
+		cost[i] = cost1 + i * DY; //new float[DY];
 		for(int j=0;j<DY;j++)
 			cost[i][j]=0;
 	}
@@ -50,6 +51,7 @@ void Compare::runDijkstra(){
 		for(int j=0;j<DY;j++)
 			cost[i][j]=10000;
 	cost[src.dx][src.dy]=0;
+	cv::Mat cost_(cv::Size(240, 240), CV_32FC1, cost1);
 
 	frontier.push(src);
 	while(!frontier.empty()){
