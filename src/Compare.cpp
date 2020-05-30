@@ -18,8 +18,8 @@ bool Compare::operator() (const State s1, const State s2){
 typedef bool (*compare2dSignature)(State, State);
 bool compare2d(State a, State b)
 {
-   //return a.cost2d>b.cost2d;	//simple dijkstra
-   return a.cost2d+abs(Compare::target.dx-a.dx)+abs(Compare::target.dy-a.dy)>b.cost2d+abs(Compare::target.dx-b.dx)+abs(Compare::target.dy-b.dy);
+   return a.cost2d>b.cost2d;	//simple dijkstra
+   //return a.cost2d+abs(Compare::target.dx-a.dx)+abs(Compare::target.dy-a.dy)>b.cost2d+abs(Compare::target.dx-b.dx)+abs(Compare::target.dy-b.dy);
 }
 
 //currently uses dijkstra's algorithm in x-y space

@@ -8,6 +8,8 @@ State::State(float x, float y, float theta){
 	this->gx=x/Grid_Res;
 	this->gy=y/Grid_Res;
 	this->gtheta=theta+0.01;
+	this->dx = this->gx*DX / GX;
+	this->dy = this->gy*DY / GY;
 }
 
 State::State(){
